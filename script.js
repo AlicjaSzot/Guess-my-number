@@ -42,18 +42,10 @@ const addGame = () => {
       highscore = score;
       document.querySelector('.highscore').textContent = highscore;
     }
-  } else if (guess > secretNumber) {
+  } else if (guess !== secretNumber) {
     if (score > 1) {
-      messageField.textContent = '📈 To high!';
-      score--;
-      scoreField.textContent = score;
-    } else {
-      messageField.textContent = '💥You lost the game!';
-      scoreField.textContent = 0;
-    }
-  } else if (guess < secretNumber) {
-    if (score > 1) {
-      messageField.textContent = '📉 To low!';
+      messageField.textContent =
+        guess > secretNumber ? '📈 To high!' : '📉 To low!';
       score--;
       scoreField.textContent = score;
     } else {
