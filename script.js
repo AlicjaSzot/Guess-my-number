@@ -1,44 +1,68 @@
 'use strict';
 
-// console.log(document.querySelector('.message').textContent);
-
-// document.querySelector('.message').textContent = 'Correct Number!🎉';
-
-// document.querySelector('.number').textContent = 13;
-// document.querySelector('.score').textContent = 10;
-
-// document.querySelector('.guess').value = 23;
-// console.log(document.querySelector('.guess').value);
-
-const secretNumber = Math.trunc(Math.random() * 20 + 1);
+const createSecretNumber = () => Math.trunc(Math.random() * 20) + 1;
+let secretNumber = createSecretNumber();
 let score = 20;
-document.querySelector('.number').textContent = secretNumber;
+let highscore = 0;
+const secretNumberField = document.querySelector('.number');
+const scoreField = document.querySelector('.score');
+const messageField = document.querySelector('.message');
+const guessInput = document.querySelector('.guess');
+const mainBackground = document.querySelector('.main');
 
-document.querySelector('.check').addEventListener('click', function () {
-  const guess = Number(document.querySelector('.guess').value);
-  console.log(guess, typeof guess);
+secretNumberField.textContent = '?';
+
+function changeBGtoGreen() {
+  mainBackground.classList.add('main--success');
+}
+
+const resetGame = () => {
+  mainBackground.classList.remove('main--success');
+  scoreField.textContent = 20;
+  secretNumberField.style.width = '15rem';
+  messageField.textContent = 'Start guessing...';
+  guessInput.value = null;
+  secretNumberField.textContent = '?';
+  secretNumber = createSecretNumber();
+};
+
+const addGame = () => {
+  let guess = Number(guessInput.value);
+
+  secretNumberField.style.width = '30rem';
 
   if (!guess) {
-    document.querySelector('.message').textContent = '⛔ No number!';
+    messageField.textContent = '⛔ No number!';
   } else if (guess === secretNumber) {
-    document.querySelector('.message').textContent = '🎉 Correct Number!';
+    messageField.textContent = '🎉 Correct Number!';
+    secretNumberField.textContent = secretNumber;
+    changeBGtoGreen();
+
+    if (score > highscore) {
+      highscore = score;
+      document.querySelector('.highscore').textContent = highscore;
+    }
   } else if (guess > secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = '📈 To high!';
+      messageField.textContent = '📈 To high!';
       score--;
-      document.querySelector('.score').textContent = score;
+      scoreField.textContent = score;
     } else {
-      document.querySelector('.message').textContent = '💥You lost the game!';
-      document.querySelector('.score').textContent = 0;
+      messageField.textContent = '💥You lost the game!';
+      scoreField.textContent = 0;
     }
   } else if (guess < secretNumber) {
     if (score > 1) {
-      document.querySelector('.message').textContent = '📉 To low!';
+      messageField.textContent = '📉 To low!';
       score--;
-      document.querySelector('.score').textContent = score;
+      scoreField.textContent = score;
     } else {
-      document.querySelector('.message').textContent = '💥You lost the game!';
-      document.querySelector('.score').textContent = 0;
+      messageField.textContent = '💥You lost the game!';
+      scoreField.textContent = 0;
     }
   }
-});
+};
+
+document.querySelector('.again').addEventListener('click', resetGame);
+
+document.querySelector('.check').addEventListener('click', addGame);

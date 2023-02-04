@@ -11,11 +11,15 @@ html {
   box-sizing: border-box;
 }
 
-body {
+.main {
   font-family: 'Press Start 2P', sans-serif;
   color: #eee;
   background-color: #222;
   /* background-color: #60b347; */
+}
+
+.main--success {
+  background-color: #60b347;
 }
 
 /* LAYOUT */
